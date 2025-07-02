@@ -2,8 +2,6 @@
 
 import AuthButton from '@/components/AuthButton'
 import ContactForm from '@/components/ContactForm'
-import AuthDebug from '@/components/AuthDebug'
-final 2import SimpleConnectionTest from '@/components/SimpleConnectionTest'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import Image from 'next/image'
 import { Londrina_Solid, Inter } from 'next/font/google'
