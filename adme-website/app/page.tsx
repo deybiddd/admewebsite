@@ -3,8 +3,7 @@
 import AuthButton from '@/components/AuthButton'
 import ContactForm from '@/components/ContactForm'
 import AuthDebug from '@/components/AuthDebug'
-import SupabaseConnectionTest from '@/components/SupabaseConnectionTest'
-import SimpleConnectionTest from '@/components/SimpleConnectionTest'
+final 2import SimpleConnectionTest from '@/components/SimpleConnectionTest'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import Image from 'next/image'
 import { Londrina_Solid, Inter } from 'next/font/google'
@@ -193,14 +192,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-      
-      {/* Debug components - remove in production */}
-      <ErrorBoundary>
-        <AuthDebug />
-      </ErrorBoundary>
-      <ErrorBoundary>
-        <SimpleConnectionTest />
-      </ErrorBoundary>
     </div>
     </ParallaxProvider>
   );

@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
+import LoadingButton from './LoadingButton'
+import Image from 'next/image'
 
 interface SignUpModalProps {
   isOpen: boolean
@@ -129,17 +131,17 @@ export default function SignUpModal({ isOpen, onClose, onSwitchToSignIn }: SignU
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto border-2 border-adme-200">
-        <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Join ADME
+    <div className="fixed inset-0 bg-gradient-to-br from-gray-100 via-gray-200 to-white bg-opacity-90 flex items-center justify-center z-50">
+      <div className="bg-white p-8 rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl border-2 border-yellow-600 relative">
+        <div className="flex flex-col items-center mb-6">
+          <Image src="/assets/images/adme-logo.png" alt="Adme Logo" width={60} height={60} className="mb-2" />
+          <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'var(--font-londrina), sans-serif' }}>
+            Just adme!
           </h2>
-          <p className="text-adme-600 dark:text-adme-400 text-sm">
+          <p className="text-yellow-700 text-sm font-light" style={{ fontFamily: 'var(--font-inter), sans-serif' }}>
             Create your account to get started
           </p>
         </div>
-        
         <form onSubmit={handleSignUp} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -212,40 +214,38 @@ export default function SignUpModal({ isOpen, onClose, onSwitchToSignIn }: SignU
             />
           </div>
 
-          {error && (
-            <div className="text-red-600 text-sm bg-red-50 dark:bg-red-900/20 p-3 rounded-md">
-              {error}
-            </div>
-          )}
-          
-          <div className="flex space-x-3">
-            <button
+          <div className="flex space-x-3 pt-2">
+            <LoadingButton
               type="submit"
-              disabled={isSigningUp}
-              className="flex-1 bg-adme-500 text-white py-2 rounded-md hover:bg-adme-600 disabled:opacity-50 transition-colors font-medium"
+              loading={isSigningUp}
+              className="flex-1 bg-yellow-600 text-white font-bold px-6 py-2 rounded-full shadow-lg hover:bg-yellow-700 transition-colors"
             >
-              {isSigningUp ? 'Creating Account...' : 'Sign Up'}
-            </button>
+              Sign Up
+            </LoadingButton>
             <button
               type="button"
               onClick={handleClose}
-              className="flex-1 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 py-2 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors"
+              className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-full hover:bg-gray-400 transition-colors font-bold"
             >
               Cancel
             </button>
           </div>
-
-          <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+          <div className="text-center text-sm text-gray-600 mt-2">
             Already have an account?{' '}
             <button
               type="button"
               onClick={onSwitchToSignIn}
-              className="text-adme-blue-600 dark:text-adme-blue-400 hover:underline font-medium"
+              className="text-yellow-700 hover:underline font-bold"
             >
               Sign In
             </button>
           </div>
         </form>
+        {error && (
+          <div className="text-red-600 text-sm bg-red-50 p-3 rounded-md mt-4">
+            {error}
+          </div>
+        )}
       </div>
     </div>
   )

@@ -6,6 +6,9 @@ import SignUpModal from './SignUpModal'
 import ProfileModal from './ProfileModal'
 import PasswordResetModal from './PasswordResetModal'
 import Link from 'next/link'
+import LoadingButton from './LoadingButton'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 export default function AuthButton() {
   const { user, profile, signIn, signOut, loading } = useAuth()
@@ -17,13 +20,14 @@ export default function AuthButton() {
   const [showProfileModal, setShowProfileModal] = useState(false)
   const [showPasswordReset, setShowPasswordReset] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSigningIn(true)
     setError(null)
 
-    const { user, error } = await signIn(email, password)
+    const { /* user, */ error } = await signIn(email, password)
     
     if (error) {
       setError(error.message)
@@ -31,6 +35,7 @@ export default function AuthButton() {
       setShowSignInForm(false)
       setEmail('')
       setPassword('')
+      router.push('/dashboard')
     }
     
     setIsSigningIn(false)
@@ -72,7 +77,34 @@ export default function AuthButton() {
 
   if (loading) {
     return (
-      <div className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded px-4 py-2 w-24 h-10"></div>
+      <button
+        className="bg-yellow-600 text-white font-bold px-6 py-2 rounded-full shadow-lg flex items-center justify-center gap-2 cursor-not-allowed opacity-80"
+        disabled
+        aria-busy="true"
+      >
+        <svg
+          className="animate-spin h-5 w-5 text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          />
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+          />
+        </svg>
+        <span>Loading…</span>
+      </button>
     )
   }
 
@@ -105,13 +137,13 @@ export default function AuthButton() {
       <div className="flex space-x-2">
         <button
           onClick={handleSignInClick}
-          className="border border-adme-500 text-adme-700 dark:text-adme-500 px-4 py-2 rounded-lg hover:bg-adme-500 hover:text-white transition-colors"
+          className="bg-yellow-600 text-white font-bold px-6 py-2 rounded-full shadow-lg hover:bg-yellow-700 transition-colors"
         >
           Sign In
         </button>
         <button
           onClick={handleSignUpClick}
-          className="bg-adme-500 text-white px-4 py-2 rounded-lg hover:bg-adme-600 transition-colors"
+          className="bg-yellow-600 text-white font-bold px-6 py-2 rounded-full shadow-lg hover:bg-yellow-700 transition-colors"
         >
           Sign Up
         </button>
@@ -119,17 +151,17 @@ export default function AuthButton() {
 
       {/* Sign In Modal */}
       {showSignInForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-md border-2 border-adme-200">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                Welcome Back
+        <div className="fixed inset-0 bg-gradient-to-br from-gray-100 via-gray-200 to-white bg-opacity-90 flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-2xl w-full max-w-md shadow-2xl border-2 border-yellow-600 relative">
+            <div className="flex flex-col items-center mb-6">
+              <Image src="/assets/images/adme-logo.png" alt="Adme Logo" width={60} height={60} className="mb-2" />
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'var(--font-londrina), sans-serif' }}>
+                Just adme!
               </h2>
-              <p className="text-adme-600 dark:text-adme-400 text-sm">
-                Sign in to your ADME account
+              <p className="text-yellow-700 text-sm font-light" style={{ fontFamily: 'var(--font-inter), sans-serif' }}>
+                Sign in to your account
               </p>
             </div>
-            
             <form onSubmit={handleSignIn} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -157,51 +189,47 @@ export default function AuthButton() {
                 />
               </div>
 
-              {error && (
-                <div className="text-red-600 text-sm bg-red-50 dark:bg-red-900/20 p-3 rounded-md">
-                  {error}
-                </div>
-              )}
-              
-              <div className="flex space-x-3">
-                <button
+              <div className="flex space-x-3 pt-2">
+                <LoadingButton
                   type="submit"
-                  disabled={isSigningIn}
-                  className="flex-1 bg-adme-500 text-white py-2 rounded-md hover:bg-adme-600 disabled:opacity-50 transition-colors font-medium"
+                  loading={isSigningIn}
+                  className="flex-1 bg-yellow-600 text-white font-bold px-6 py-2 rounded-full shadow-lg hover:bg-yellow-700 transition-colors"
                 >
-                  {isSigningIn ? 'Signing In...' : 'Sign In'}
-                </button>
+                  Sign In
+                </LoadingButton>
                 <button
                   type="button"
                   onClick={handleCloseSignIn}
-                  className="flex-1 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 py-2 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors"
+                  className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-full hover:bg-gray-400 transition-colors font-bold"
                 >
                   Cancel
                 </button>
               </div>
-
-              <div className="text-center text-sm text-gray-600 dark:text-gray-400 space-y-2">
-                <div>
-                  <button
-                    type="button"
-                    onClick={handleShowPasswordReset}
-                    className="text-adme-blue-600 dark:text-adme-blue-400 hover:underline"
-                  >
-                    Forgot your password?
-                  </button>
-                </div>
-                <div>
-                  Don't have an account?{' '}
-                  <button
-                    type="button"
-                    onClick={handleSwitchToSignUp}
-                    className="text-adme-blue-600 dark:text-adme-blue-400 hover:underline font-medium"
-                  >
-                    Sign Up
-                  </button>
-                </div>
+              <div className="text-center text-sm text-gray-600 mt-2">
+                <button
+                  type="button"
+                  onClick={handleShowPasswordReset}
+                  className="text-yellow-700 hover:underline font-bold"
+                >
+                  Forgot your password?
+                </button>
+              </div>
+              <div className="text-center text-sm text-gray-600 mt-2">
+                Don&apos;t have an account?{' '}
+                <button
+                  type="button"
+                  onClick={handleSwitchToSignUp}
+                  className="text-yellow-700 hover:underline font-bold"
+                >
+                  Sign Up
+                </button>
               </div>
             </form>
+            {error && (
+              <div className="text-red-600 text-sm bg-red-50 p-3 rounded-md mt-4">
+                {error}
+              </div>
+            )}
           </div>
         </div>
       )}

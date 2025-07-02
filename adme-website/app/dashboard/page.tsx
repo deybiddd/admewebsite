@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { Inter, Londrina_Solid } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
-const londrina = Londrina_Solid({ weight: '400', subsets: ['latin'], variable: '--font-londrina' })
 
 export default function Dashboard() {
   const { user, profile, updateProfile } = useAuth()
@@ -194,7 +193,7 @@ export default function Dashboard() {
                           Welcome back, {profile?.full_name?.split(' ')[0] || 'User'}!
                         </h2>
                         <p className="text-gray-500 mt-1 font-light">
-                          Here's an overview of your account activity
+                          Here&apos;s an overview of your account activity
                         </p>
                       </div>
                       <div className="w-16 h-16 bg-adme-100 rounded-full flex items-center justify-center">

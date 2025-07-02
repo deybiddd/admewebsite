@@ -152,7 +152,7 @@ export default function SupabaseConnectionTest() {
         const { data: authData, error: authError } = await Promise.race([
           authPromise,
           authTimeout
-        ]) as any
+        ]) as unknown
         
         if (authError) {
           console.error('Auth error:', authError)
@@ -185,7 +185,7 @@ export default function SupabaseConnectionTest() {
         const { data: dbData, error: dbError } = await Promise.race([
           dbPromise,
           dbTimeout
-        ]) as any
+        ]) as unknown
         
         if (dbError) {
           console.error('Database error:', dbError)

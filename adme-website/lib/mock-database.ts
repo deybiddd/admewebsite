@@ -1,7 +1,7 @@
 // Mock database for when Supabase tables don't exist yet
 export class MockDatabase {
   private static instance: MockDatabase
-  private storage: any = {}
+  private storage: unknown = {}
 
   static getInstance(): MockDatabase {
     if (!MockDatabase.instance) {
@@ -10,7 +10,7 @@ export class MockDatabase {
     return MockDatabase.instance
   }
 
-  async createContactInquiry(inquiry: any) {
+  async createContactInquiry(inquiry: unknown) {
     console.log('Mock Database: Storing contact inquiry', inquiry)
     
     // Store in localStorage for demo purposes

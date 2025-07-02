@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { createClientComponentClient } from '@/lib/supabase'
+import LoadingButton from './LoadingButton'
+import Image from 'next/image'
 
 interface PasswordResetModalProps {
   isOpen: boolean
@@ -45,24 +47,19 @@ export default function PasswordResetModal({ isOpen, onClose }: PasswordResetMod
 
   if (success) {
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-md">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+      <div className="fixed inset-0 bg-gradient-to-br from-gray-100 via-gray-200 to-white bg-opacity-90 flex items-center justify-center z-50">
+        <div className="bg-white p-8 rounded-2xl w-full max-w-md shadow-2xl border-2 border-yellow-600 relative">
+          <div className="flex flex-col items-center">
+            <Image src="/assets/images/adme-logo.png" alt="Adme Logo" width={60} height={60} className="mb-2" />
+            <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'var(--font-londrina), sans-serif' }}>
               Check Your Email!
             </h2>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">
-              We've sent a password reset link to <strong>{email}</strong>. 
-              Please check your email and follow the instructions to reset your password.
+            <p className="text-yellow-700 text-sm font-light mb-6" style={{ fontFamily: 'var(--font-inter), sans-serif' }}>
+              We've sent a password reset link to <strong>{email}</strong>.<br />Please check your email and follow the instructions to reset your password.
             </p>
             <button
               onClick={handleClose}
-              className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition-colors"
+              className="w-full bg-yellow-600 text-white font-bold px-6 py-2 rounded-full shadow-lg hover:bg-yellow-700 transition-colors"
             >
               Got it!
             </button>
@@ -73,29 +70,20 @@ export default function PasswordResetModal({ isOpen, onClose }: PasswordResetMod
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-md">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+    <div className="fixed inset-0 bg-gradient-to-br from-gray-100 via-gray-200 to-white bg-opacity-90 flex items-center justify-center z-50">
+      <div className="bg-white p-8 rounded-2xl w-full max-w-md shadow-2xl border-2 border-yellow-600 relative">
+        <div className="flex flex-col items-center mb-6">
+          <Image src="/assets/images/adme-logo.png" alt="Adme Logo" width={60} height={60} className="mb-2" />
+          <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'var(--font-londrina), sans-serif' }}>
             Reset Password
           </h2>
-          <button
-            onClick={handleClose}
-            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+          <p className="text-yellow-700 text-sm font-light text-center" style={{ fontFamily: 'var(--font-inter), sans-serif' }}>
+            Enter your email address and we&apos;ll send you a link to reset your password.
+          </p>
         </div>
-        
-        <p className="text-gray-600 dark:text-gray-300 mb-6">
-          Enter your email address and we'll send you a link to reset your password.
-        </p>
-
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Email Address
             </label>
             <input
@@ -103,29 +91,27 @@ export default function PasswordResetModal({ isOpen, onClose }: PasswordResetMod
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
               placeholder="Enter your email address"
             />
           </div>
-
           {error && (
-            <div className="text-red-600 text-sm bg-red-50 dark:bg-red-900/20 p-3 rounded-md">
+            <div className="text-red-600 text-sm bg-red-50 p-3 rounded-md">
               {error}
             </div>
           )}
-          
-          <div className="flex space-x-3">
-            <button
+          <div className="flex space-x-3 pt-2">
+            <LoadingButton
               type="submit"
-              disabled={isLoading}
-              className="flex-1 bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+              loading={isLoading}
+              className="flex-1"
             >
-              {isLoading ? 'Sending...' : 'Send Reset Link'}
-            </button>
+              Send Reset Link
+            </LoadingButton>
             <button
               type="button"
               onClick={handleClose}
-              className="flex-1 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 py-2 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors"
+              className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-full hover:bg-gray-400 transition-colors font-bold"
             >
               Cancel
             </button>
