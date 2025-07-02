@@ -55,7 +55,7 @@ export default function PasswordResetModal({ isOpen, onClose }: PasswordResetMod
               Check Your Email!
             </h2>
             <p className="text-yellow-700 text-sm font-light mb-6" style={{ fontFamily: 'var(--font-inter), sans-serif' }}>
-              We've sent a password reset link to <strong>{email}</strong>.<br />Please check your email and follow the instructions to reset your password.
+              We&apos;ve sent a password reset link to <strong>{email}</strong>.<br />Please check your email and follow the instructions to reset your password.
             </p>
             <button
               onClick={handleClose}

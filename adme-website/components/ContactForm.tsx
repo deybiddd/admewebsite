@@ -104,7 +104,7 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
       {success && (
         <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-md">
           <p className="text-green-800">
-            Thank you for your inquiry! We'll get back to you soon.
+            Thank you for your inquiry! We&apos;ll get back to you soon.
           </p>
         </div>
       )}
