@@ -66,7 +66,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [supabase.auth])
 
   const fetchProfile = async (userId: string) => {
+    setLoading(true); // Ensure loading is set
     try {
+      console.log('[fetchProfile] Fetching profile for userId:', userId)
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -74,12 +76,56 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .single()
 
       if (error) {
-        console.error('Error fetching profile:', error)
+        console.error('[fetchProfile] Error fetching profile:', error, 'userId:', userId, 'message:', error.message, 'details:', error.details)
+        // If profile doesn't exist, try to create it
+        if (error.code === 'PGRST116' || error.message?.toLowerCase().includes('no rows')) {
+          console.log('Profile not found, attempting to create one...')
+          await createMissingProfile(userId)
+        } else {
+          setProfile(null)
+        }
+      } else if (!data) {
+        // If no data returned, treat as missing profile
+        console.log('Profile data is null, attempting to create one...')
+        await createMissingProfile(userId)
       } else {
         setProfile(data)
       }
     } catch (error) {
-      console.error('Error fetching profile:', error)
+      console.error('[fetchProfile] Exception:', error, 'userId:', userId)
+      setProfile(null)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const createMissingProfile = async (userId: string) => {
+    try {
+      const { data: userData } = await supabase.auth.getUser()
+      if (userData.user) {
+        const { data, error } = await supabase
+          .from('profiles')
+          .insert({
+            id: userId,
+            email: userData.user.email || '',
+            full_name: userData.user.user_metadata?.full_name || '',
+            company_name: userData.user.user_metadata?.company_name || null,
+            role: 'client',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          })
+          .select()
+          .single()
+
+        if (error) {
+          console.error('Error creating profile:', error)
+        } else {
+          console.log('Profile created successfully:', data)
+          setProfile(data)
+        }
+      }
+    } catch (error) {
+      console.error('Error creating missing profile:', error)
     }
   }
 
@@ -94,6 +140,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         },
       },
     })
+
+    // Immediately create profile after successful sign-up
+    if (data?.user && !error) {
+      await createMissingProfile(data.user.id)
+    }
 
     return { user: data?.user ?? null, error }
   }
@@ -115,9 +166,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const updateProfile = async (updates: Partial<Profile>): Promise<Profile | null> => {
-    if (!user) return null
-
+    if (!user) {
+      console.error('[updateProfile] No user found when updating profile')
+      return null
+    }
     try {
+      console.log('[updateProfile] Updating profile for userId:', user.id, 'with updates:', updates)
       const { data, error } = await supabase
         .from('profiles')
         .update(updates)
@@ -126,14 +180,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .single()
 
       if (error) {
-        console.error('Error updating profile:', error)
+        console.error('[updateProfile] Error updating profile:', error, 'userId:', user.id, 'message:', error.message, 'details:', error.details)
         return null
       }
 
       setProfile(data)
       return data
     } catch (error) {
-      console.error('Error updating profile:', error)
+      console.error('[updateProfile] Exception:', error, 'userId:', user.id)
       return null
     }
   }

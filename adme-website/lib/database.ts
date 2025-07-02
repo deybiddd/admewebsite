@@ -1,6 +1,5 @@
-import { createClientComponentClient, createServerComponentClient } from './supabase'
+import { createClientComponentClient } from './supabase'
 import { Database } from './database.types'
-import { cookies } from 'next/headers'
 
 type Tables = Database['public']['Tables']
 type Profile = Tables['profiles']['Row']
@@ -189,52 +188,6 @@ export class DatabaseClient {
     if (error) {
       console.error('Error signing out:', error)
     }
-  }
-}
-
-// Server-side database operations
-export class ServerDatabaseClient {
-  private supabase: ReturnType<typeof createServerComponentClient>
-
-  constructor(cookieStore: ReturnType<typeof cookies>) {
-    this.supabase = createServerComponentClient(cookieStore)
-  }
-
-  async getProfile(userId: string): Promise<Profile | null> {
-    const { data, error } = await this.supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single()
-
-    if (error) {
-      console.error('Error fetching profile:', error)
-      return null
-    }
-    return data
-  }
-
-  async getServices(): Promise<Service[]> {
-    const { data, error } = await this.supabase
-      .from('services')
-      .select('*')
-      .eq('is_active', true)
-      .order('display_order', { ascending: true })
-
-    if (error) {
-      console.error('Error fetching services:', error)
-      return []
-    }
-    return data || []
-  }
-
-  async getCurrentUser() {
-    const { data: { user }, error } = await this.supabase.auth.getUser()
-    if (error) {
-      console.error('Error getting current user:', error)
-      return null
-    }
-    return user
   }
 }
 
