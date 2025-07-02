@@ -206,23 +206,23 @@ export default function AuthButton() {
                 </button>
               </div>
               <div className="text-center text-sm text-gray-600 mt-2">
-                <button
-                  type="button"
-                  onClick={handleShowPasswordReset}
+                  <button
+                    type="button"
+                    onClick={handleShowPasswordReset}
                   className="text-yellow-700 hover:underline font-bold"
-                >
-                  Forgot your password?
-                </button>
-              </div>
+                  >
+                    Forgot your password?
+                  </button>
+                </div>
               <div className="text-center text-sm text-gray-600 mt-2">
                 Don&apos;t have an account?{' '}
-                <button
-                  type="button"
-                  onClick={handleSwitchToSignUp}
+                  <button
+                    type="button"
+                    onClick={handleSwitchToSignUp}
                   className="text-yellow-700 hover:underline font-bold"
-                >
-                  Sign Up
-                </button>
+                  >
+                    Sign Up
+                  </button>
               </div>
             </form>
             {error && (
