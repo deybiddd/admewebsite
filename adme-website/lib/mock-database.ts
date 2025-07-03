@@ -10,7 +10,7 @@ export class MockDatabase {
     return MockDatabase.instance
   }
 
-  async createContactInquiry(inquiry: unknown) {
+  async createContactInquiry(inquiry: Record<string, any>) {
     console.log('Mock Database: Storing contact inquiry', inquiry)
     
     // Store in localStorage for demo purposes

@@ -27,7 +27,7 @@ export default function AuthButton() {
     setIsSigningIn(true)
     setError(null)
 
-    const { /* user, */ error } = await signIn(email, password)
+    const { error } = await signIn(email, password)
     
     if (error) {
       setError(error.message)

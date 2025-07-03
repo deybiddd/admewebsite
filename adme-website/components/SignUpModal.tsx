@@ -116,7 +116,7 @@ export default function SignUpModal({ isOpen, onClose, onSwitchToSignIn }: SignU
               Check Your Email!
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mb-6">
-              We've sent you a confirmation link. Please check your email and click the link to activate your account.
+              We&apos;ve sent you a confirmation link. Please check your email and click the link to activate your account.
             </p>
             <button
               onClick={handleClose}
@@ -240,6 +240,7 @@ export default function SignUpModal({ isOpen, onClose, onSwitchToSignIn }: SignU
               Sign In
             </button>
           </div>
+          <p className="text-sm text-gray-500 mt-2">We&apos;ll never share your email.</p>
         </form>
         {error && (
           <div className="text-red-600 text-sm bg-red-50 p-3 rounded-md mt-4">

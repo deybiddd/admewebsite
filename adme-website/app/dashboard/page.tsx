@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { Inter, Londrina_Solid } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const londrina = Londrina_Solid({ weight: '400', subsets: ['latin'], variable: '--font-londrina' })
 
 export default function Dashboard() {
   const { user, profile, updateProfile } = useAuth()
