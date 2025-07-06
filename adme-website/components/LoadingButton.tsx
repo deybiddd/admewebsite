@@ -5,17 +5,18 @@ interface LoadingButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   children: React.ReactNode
 }
 
-export default function LoadingButton({ loading, children, disabled, ...props }: LoadingButtonProps) {
+export default function LoadingButton({ loading, children, disabled, className, ...props }: LoadingButtonProps) {
   return (
     <button
-      className="bg-yellow-600 text-white font-bold px-6 py-2 rounded-full shadow-lg flex items-center justify-center gap-2 transition-colors hover:bg-yellow-700 disabled:opacity-80 disabled:cursor-not-allowed"
+      className={`bg-white border border-yellow-600 text-yellow-600 font-bold px-6 py-2 rounded-full shadow-lg tracking-wide focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:bg-yellow-500 hover:text-white hover:border-transparent transition-all duration-200 transform hover:scale-105 hover:shadow-2xl flex items-center justify-center gap-2 disabled:opacity-80 disabled:cursor-not-allowed ${className || ''}`}
+      style={{ fontFamily: 'var(--font-londrina), sans-serif' }}
       disabled={disabled || loading}
       aria-busy={loading}
       {...props}
     >
       {loading && (
         <svg
-          className="animate-spin h-5 w-5 text-white"
+          className="animate-spin h-5 w-5 text-current"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
