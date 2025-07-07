@@ -104,7 +104,8 @@ export default function PasswordResetModal({ isOpen, onClose }: PasswordResetMod
             <LoadingButton
               type="submit"
               loading={isLoading}
-              className="flex-1"
+              className="flex-1 bg-yellow-600 text-white font-bold px-6 py-2 rounded-full shadow-lg hover:bg-yellow-700 transition-colors"
+              style={{ fontFamily: 'var(--font-londrina), sans-serif' }}
             >
               Send Reset Link
             </LoadingButton>

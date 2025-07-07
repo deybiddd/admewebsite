@@ -16,6 +16,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<{ user: User | null; error: AuthError | null }>
   signOut: () => Promise<void>
   updateProfile: (updates: Partial<Profile>) => Promise<Profile | null>
+  profileFetchError: string | null
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -25,6 +26,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(true)
+  const [profileFetchError, setProfileFetchError] = useState<string | null>(null)
   
   const supabase = createClientComponentClient()
 
@@ -67,6 +69,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const fetchProfile = async (userId: string) => {
     setLoading(true); // Ensure loading is set
+    setProfileFetchError(null);
     try {
       console.log('[fetchProfile] Fetching profile for userId:', userId)
       const { data, error } = await supabase
@@ -83,6 +86,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           await createMissingProfile(userId)
         } else {
           setProfile(null)
+          setUser(null)
+          setSession(null)
+          setProfileFetchError('Failed to fetch profile. You have been signed out.')
+          await signOut()
+          return
         }
       } else if (!data) {
         // If no data returned, treat as missing profile
@@ -94,6 +102,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (error) {
       console.error('[fetchProfile] Exception:', error, 'userId:', userId)
       setProfile(null)
+      setUser(null)
+      setSession(null)
+      setProfileFetchError('Failed to fetch profile. You have been signed out.')
+      await signOut()
+      return
     } finally {
       setLoading(false)
     }
@@ -201,6 +214,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signIn,
     signOut,
     updateProfile,
+    profileFetchError,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
