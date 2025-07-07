@@ -16,7 +16,7 @@ export default function AuthCallback() {
 
   useEffect(() => {
     // Supabase will automatically parse the URL and set the session if present
-    const { error: authError } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN") {
         setLoading(false);
         router.replace("/dashboard");
@@ -31,7 +31,7 @@ export default function AuthCallback() {
 
     return () => {
       clearTimeout(timeout);
-      authError?.unsubscribe();
+      subscription.unsubscribe();
     };
   }, [router, supabase.auth]);
 
